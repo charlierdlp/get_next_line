@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cruiz-de <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cruiz-de <cruiz-de@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 19:53:33 by cruiz-de          #+#    #+#             */
-/*   Updated: 2020/02/11 13:29:38 by cruiz-de         ###   ########.fr       */
+/*   Updated: 2021/05/24 19:01:44 by cruiz-de         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "get_next_line.h"
-#include <fcntl.h>
 
 int	ft_separator(char **content, char **line)
 {
@@ -41,30 +39,41 @@ int	ft_separator(char **content, char **line)
 	return (1);
 }
 
+void	alloc_content(char **content, char *buf, int i)
+{
+	char	*tmp;
+
+	buf[i] = '\0';
+	if (!*content)
+		*content = ft_strdup(buf);
+	else
+	{
+		tmp = *content;
+		*content = ft_strjoin(*content, buf);
+		free(tmp);
+	}
+}
+
 int	get_next_line(int fd, char **line)
 {
 	static char	*content;
-	char		*tmp;
 	char		*buf;
 	int			i;
 
-	if (!(buf = malloc(sizeof(char) * (BUFFER_SIZE + 1))))
+	buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (fd == -1 || BUFFER_SIZE < 1 || read(fd, buf, 0) == -1
+		|| !line || !buf)
 		return (-1);
-	if (fd == -1 || BUFFER_SIZE < 1 || read(fd, buf, 0) == -1 || line == NULL)
-		return (-1);
-	while ((i = read(fd, buf, BUFFER_SIZE)) > 0)
+	if (!(content && ft_strchr(content, '\n')))
 	{
-		buf[i] = '\0';
-		if (!content)
-			content = ft_strdup(buf);
-		else
+		i = read(fd, buf, BUFFER_SIZE);
+		while (i > 0)
 		{
-			tmp = content;
-			content = ft_strjoin(content, buf);
-			free(tmp);
+			alloc_content(&content, buf, i);
+			if (ft_strchr(buf, '\n'))
+				break ;
+			i = read(fd, buf, BUFFER_SIZE);
 		}
-		if (ft_strchr(buf, '\n'))
-			break ;
 	}
 	free(buf);
 	return (ft_separator(&content, line));

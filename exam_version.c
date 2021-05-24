@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   encore.c                                           :+:      :+:    :+:   */
+/*   exam_version.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cruiz-de <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cruiz-de <cruiz-de@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/23 11:13:04 by cruiz-de          #+#    #+#             */
-/*   Updated: 2020/07/23 12:08:53 by cruiz-de         ###   ########.fr       */
+/*   Updated: 2021/05/06 20:15:18 by cruiz-de         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 #include <stdlib.h>
 #define BUFFER_SIZE 1000
 
-int ft_strlen(char *str)
+int	ft_strlen(char *str)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	while(str[i])
 		i++;
 	return(i);
@@ -25,7 +27,9 @@ int ft_strlen(char *str)
 
 char *ft_strchr(char *str, char c)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	while(str[i])
 	{
 		if (str[i] == c)
@@ -40,8 +44,9 @@ char *ft_strchr(char *str, char c)
 char *ft_substr(char *str, int start, int len)
 {
 	char *new;
-	int i = 0;
+	int	i;
 
+	i = 0;
 	if(!(new = malloc(len + 1)))
 		return(NULL);
 	while(i < len)
